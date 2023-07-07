@@ -102,6 +102,16 @@ const data = [
 
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  return NextResponse.json({ data });
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const pageParam = searchParams.get('page');
+  const page = pageParam ? parseInt(pageParam, 10) : 1;
+  const countParam = searchParams.get('count');
+  const count = countParam ? parseInt(countParam, 10) : 1;
+
+  const startIndex = (page - 1) * count;
+  const endIndex = startIndex + count;
+  const paginatedData = data.slice(startIndex, endIndex);
+
+  return NextResponse.json(paginatedData);
 }
