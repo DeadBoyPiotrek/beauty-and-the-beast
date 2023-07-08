@@ -1,3 +1,0 @@
-interface usePaginationProps {}
-
-const usePagination = () => {};

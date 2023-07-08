@@ -1,5 +1,8 @@
 // import fs from 'node:fs';
 // import path from 'node:path';
+
+import { NextResponse } from 'next/server';
+
 // const input = fs.readFileSync(path.join(__dirname, 'staff.json'));
 const data = [
   {
@@ -72,13 +75,13 @@ const data = [
     lastName: 'Podstępny',
     dateOfBirth: '09.12.1972 17:35',
     function: 'kamerdyner',
+    experience: 2,
   },
   {
     id: 10,
     firstName: 'Walerian',
     lastName: 'Drażliwy',
     dateOfBirth: '29.03.1980 15:36',
-
     function: 'lokaj',
     experience: 8,
   },
@@ -100,18 +103,6 @@ const data = [
   },
 ];
 
-import { NextResponse } from 'next/server';
-
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const pageParam = searchParams.get('page');
-  const page = pageParam ? parseInt(pageParam, 10) : 1;
-  const countParam = searchParams.get('count');
-  const count = countParam ? parseInt(countParam, 10) : 1;
-
-  const startIndex = (page - 1) * count;
-  const endIndex = startIndex + count;
-  const paginatedData = data.slice(startIndex, endIndex);
-
-  return NextResponse.json(paginatedData);
+export async function GET() {
+  return NextResponse.json(data.sort((a, b) => a.id - b.id));
 }
